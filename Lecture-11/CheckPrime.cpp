@@ -19,8 +19,6 @@ int main() {
 	cin >> n;
 
 	bool ans = CheckPrime(n);
-
-
 	if (ans == true) {
 		cout << "Prime" << endl;
 	}

@@ -29,7 +29,7 @@ void printArray2(int *arr, int n) {
 void printArray3(int *arr, int n) {
 	for (int i = 0; i < n; ++i)
 	{
-		cout << arr[i] << " ";
+		cout << arr[i] << " "; // arr[i] == *(arr+i)
 	}
 	cout << endl;
 }

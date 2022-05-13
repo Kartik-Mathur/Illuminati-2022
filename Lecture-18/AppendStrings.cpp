@@ -9,7 +9,7 @@ int length(char *a) {
 		cnt ++;
 	}
 	return cnt;
-}
+}[[]]
 
 int main() {
 

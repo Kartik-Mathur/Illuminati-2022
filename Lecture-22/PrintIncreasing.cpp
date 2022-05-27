@@ -21,8 +21,6 @@ void print1(int i, int n) {
 	cout << i << " ";
 	print1(i + 1, n);
 }
-
-
 int main() {
 
 	int n = 10;

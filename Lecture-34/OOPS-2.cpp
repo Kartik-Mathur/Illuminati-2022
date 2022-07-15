@@ -1,3 +1,4 @@
+// OOPS - 2.cpp
 #include <iostream>
 using namespace std;
 
@@ -11,9 +12,13 @@ public:
 	int seats;
 	int model;
 	const int tyres;
-	// DEFAULT FUNCTIONS/METHODS
-	// 1. Constructor: It is used to create an Object
-	// Constructor: Default Methods
+	// FUNCTIONS
+	void operator=(Car &X);
+
+	void print();
+
+	void updateName(char *n);
+
 	Car(): tyres(4) {
 		cout << "Inside Default Constructor" << endl;
 		name = NULL;
@@ -21,7 +26,6 @@ public:
 		// tyres = 4;
 	}
 
-	// 2. Parameterised constructor
 	Car(char *n, int s, int p, int md): tyres(4), seats(s), model(md), price(p) {
 		cout << "Inside Parameterised Constructor" << endl;
 		name = new char[strlen(n) + 1];
@@ -32,8 +36,6 @@ public:
 		count++;
 	}
 
-	// 3. Copy Constructor: Default Methods
-	// Car C = B; or Car C(B);
 	Car(Car &X): tyres(4) {
 		cout << "Inside Copy Constructor" << endl;
 		name = new char[strlen(X.name) + 1];
@@ -45,42 +47,10 @@ public:
 		count++;
 	}
 
-	// 4. Copy Assignment Operator: Default Method
-	// Car C("AUDI",4,6,2018);
-	// Car B("BMW",2,10,2020);
-	// C = B; // Assignment
-	void operator=(Car &X) { // Car &X = B;
-		cout << "Inside Copy Assignment Operator" << endl;
-		if (name != NULL) {
-			delete []name;
-		}
-		name = new char[strlen(X.name) + 1];
-		strcpy(name, X.name);
-		seats = X.seats;
-		model = X.model;
-		price = X.price;
-	}
-
 	// 5. Destructor: Default Method
 	~Car() {
 		cout << "Deleting car " << name << endl;
 		count--;
-	}
-
-	// Functions
-	void print() {
-		cout << "Name   : " << name << endl;
-		cout << "Price  :$" << price << endl;
-		cout << "Model  : " << model << endl;
-		cout << "Seats  : " << seats << endl << endl;
-	}
-
-	void updateName(char *n) {
-		if (name != NULL) {
-			delete []name;
-		}
-		name = new char[strlen(n) + 1];
-		strcpy(name, n);
 	}
 
 	// GETTER AND SETTER
@@ -109,6 +79,33 @@ public:
 	friend int khabri(Car &X);
 };
 
+void Car::operator=(Car &X) {
+	cout << "Inside Copy Assignment Operator" << endl;
+	if (name != NULL) {
+		delete []name;
+	}
+	name = new char[strlen(X.name) + 1];
+	strcpy(name, X.name);
+	seats = X.seats;
+	model = X.model;
+	price = X.price;
+}
+
+void Car::print() {
+	cout << "Name   : " << name << endl;
+	cout << "Price  :$" << price << endl;
+	cout << "Model  : " << model << endl;
+	cout << "Seats  : " << seats << endl << endl;
+}
+
+void Car::updateName(char *n) {
+	if (name != NULL) {
+		delete []name;
+	}
+	name = new char[strlen(n) + 1];
+	strcpy(name, n);
+}
+
 int khabri(Car &X) {
 	return X.price;
 }
@@ -127,41 +124,31 @@ ostream& operator<<(ostream&os, Car &X) {
 }
 ////////////// OVERLOADING COUT //////////////////
 
+////////////// OVERLOADING CIN //////////////////
+istream& operator>>(istream& is, Car &X) {
+	cout << "Enter Name: ";
+	char name[1000];
+	cin >> name;
+	X.updateName(name);
+	cout << "Enter Price: ";
+	int p;
+	cin >> p;
+	X.setPrice(p);
+	cout << "Enter Model: ";
+	cin >> X.model;
+	cout << "Enter Seats: ";
+	cin >> X.seats;
+	return is;
+}
+////////////// OVERLOADING CIN //////////////////
+
+
 int main() {
 
 	Car A;
-	// A.price = 100;
-	A.setPrice(180);
-	cout << A.getPrice() << endl;
-	A.updateName("BMW");
-
-	A.model = 2022;
-	A.seats = 2;
-	// A.print();
-	Car B("AUDI", 2, 120, 2020);
-
-	Car C(B);
-
-	Car D = C;
-
-	cout << "Number of cars: " << Car::count << endl;
-	B.name[0] = 'T';
-
-
-	// B.print();
-	// C.print();
-	// D.print();
-
-	if (A > B) {
-		cout << "A ka price jyada hai" << endl;
-	}
-	else {
-		cout << "B ka price jyada hai" << endl;
-	}
-	// cout << A;
-	// cout << B;
-	// cout << C;
-	cout << A << endl << B << endl << C << endl << D << endl;
+	cin >> A;
+	cout << A << endl;
+	// cout << A << endl << B << endl << C << endl << D << endl;
 
 	return 0;
 }

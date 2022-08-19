@@ -268,6 +268,61 @@ void bubbleSort(node* &head) {
 //!!!!!!!!!!!!!!!!! BUBBLE SORT LINKED LIST  ///////////////////////
 
 
+/////////////////// CYCLE BREAK LINKED LIST  ///////////////////////
+void cycleBreak(node* head, node* fast = NULL) {
+
+	if (fast == NULL) {
+		bool cycleHai = false;
+		node* slow = head;
+		fast = head;
+		while (fast and fast->next) {
+			fast = fast->next->next;
+			slow = slow->next;
+			if (fast == slow) {
+				cycleHai = true;
+				break;
+			}
+		}
+		if (cycleHai == false) {
+			return;
+		}
+	}
+	// Write the code to break the cycle
+	node* p = head;
+	while (p->next != fast) {
+		p = p->next;
+	}
+
+	node* slow = head;
+	while (fast != slow) {
+		p = fast;
+		fast = fast->next;
+		slow = slow->next;
+	}
+	p->next = NULL;
+}
+//!!!!!!!!!!!!!!!!! CYCLE BREAK LINKED LIST  ///////////////////////
+
+/////////////////// CYCLE DETECTION LINKED LIST  ///////////////////////
+bool cyclePresentLL(node* head) {
+	node* slow = head, *fast = head;
+	while (fast and fast->next) {
+		fast = fast->next->next;
+		slow = slow->next;
+		if (fast == slow) {
+			// Cycle hai toh cycle todd kar return true karo
+			cycleBreak(head, fast);
+			return true;
+		}
+	}
+	return false;
+}
+//!!!!!!!!!!!!!!!!! CYCLE DETECTION LINKED LIST  ///////////////////////
+
+void createCycle(node* head, node* tail) {
+	tail->next = head->next->next;
+}
+
 int main() {
 	node* head, * tail, *head1, *tail1;
 	head = tail = head1 = tail1 = NULL;
@@ -279,12 +334,25 @@ int main() {
 	insertAtEnd(head, tail, 8);
 	insertAtEnd(head, tail, 7);
 	insertAtEnd(head, tail, 6);
-	insertAtEnd(head, tail, 0);
-
+	insertAtEnd(head, tail, 10);
+	insertAtEnd(head, tail, 20);
+	insertAtEnd(head, tail, 30);
+	insertAtEnd(head, tail, 40);
+	createCycle(head, tail);
+	// if (cyclePresentLL(head)) {
+	// cout << "Print mat karna cycle hai\n";
+	// cout << "Cycle hai\n";
+	// printLL(head);
+	// }
+	// else {
+	// printLL(head);
+	// }
+	cycleBreak(head);
 	printLL(head);
+	// printLL(head);
 	// head = mergeSort(head);
-	bubbleSort(head);
-	printLL(head);
+	// bubbleSort(head);
+	// printLL(head);
 
 
 	// insertAtEnd(head1, tail1, 2);

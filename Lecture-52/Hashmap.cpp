@@ -93,11 +93,33 @@ public:
 		}
 	}
 
+	node* search(string key) {
+		int hashIndex = hashFunction(key);
+		node* head = a[hashIndex];
+
+		while (head) {
+			if (head->key == key)  return head;
+
+			head = head->next;
+		}
+		return head; // head here will always be equals to NULL
+	}
+
+	int& operator[](string key) {
+		node* x = search(key);
+		if (x == NULL) {
+			int garbage;
+			insert(key, garbage);
+			x = search(key);
+		}
+
+		return x->value;
+	}
+
+
 };
 
 int main() {
-
-
 	hashmap h;
 	h.insert("Mango", 100);
 	h.insert("Grape", 80);
@@ -105,7 +127,18 @@ int main() {
 	h.insert("Kiwi", 10);
 	h.insert("Pineapple", 50);
 
+	// node* x = h.search("Mango");
+	// if (x != NULL) {
+	// 	cout << "Present hai\n";
+	// 	x->value = 2000;
+	// 	cout << x->value << endl;
+	// }
+	// else cout << "Present Nahi hai\n";
+	h["Banana"] = 50; // Insert
+	h["Banana"] = 70; // Update
+	cout << h["Banana"] << endl;  // Search
 	h.print();
+
 
 	return 0;
 }

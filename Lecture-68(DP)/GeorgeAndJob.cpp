@@ -38,49 +38,42 @@ using namespace std;
 #define init2(a,n,m,v) for(int i=0;i<=n;i++){for(int j=0;j<=m;j++){a[i][j]=v;}}
 #define AS 200001
 #define mod 1000000007
-#define inf 1e12
+ll n, m, k;
+ll a[5005];
+ll dp[5005][5005];
 
-ll N, W;
-ll price[102], wt[102];
-ll max_profit = 0;
+ll george(ll i, ll window_cnt = 0) {
+
+	if (i > n - m || window_cnt == k) {
+		return dp[i][window_cnt] = 0;
+	}
+
+	if (dp[i][window_cnt] != -1) return dp[i][window_cnt];
+	// Consider the first window of size m
+	ll ans = 0;
+	for (int j = i; j < i + m; ++j)
+	{
+		ans += a[j];
+	}
+
+	ll op1 = ans + george(i + m, window_cnt + 1);
+	ll op2 = 0 + george(i + 1, window_cnt);
+
+	return dp[i][window_cnt] = max(op1, op2);
+}
+
 
 void solve() {
-	cin >> N >> W;
-	for (int i = 0; i < N; ++i)
-	{
-		cin >> wt[i] >> price[i];
-		max_profit += price[i];
-	}
+	cin >> n >> m >> k;
+	F(a, n);
+	memset(dp, -1, sizeof dp);
 
-	vector<vector<ll> > dp(N + 1, vector<ll>(max_profit + 1));
-
-	for (int n = 0; n <= N; ++n)
-	{
-		for (int profit = 0; profit <= max_profit; ++profit)
-		{
-			if (n == 0 and profit == 0) {
-				dp[n][profit] = 0;
-			}
-			else if (n == 0) dp[n][profit] = inf;
-			else if (price[n - 1] <= profit) {
-				ll op1 = wt[n - 1] + dp[n - 1][profit - price[n - 1]];
-				ll op2 = dp[n - 1][profit];
-				dp[n][profit] = min(op1, op2);
-			}
-			else dp[n][profit] = dp[n - 1][profit];
-		}
-	}
-
-	ll ans = 0;
-	for (int i = 1; i <= max_profit; ++i)
-	{
-		if (dp[N][i] <= W) ans = i;
-	}
-	cout << ans << endl;
+	cout << george(0) << endl;
 }
 
 int main() {
 	fastIO
+
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
 	freopen("output.txt", "w", stdout);
